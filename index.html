@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>File Metadata Microservice</title>
+</head>
+<body>
+	<form id = "upload-form" enctype = "multipart/form-data" action = "/file-size" method = "post">
+		<input type="file" name="file" id="file"/>
+		<input type="submit" value="Upload Image" name="submit">
+	</form>
+
+	<script type="text/javascript">
+		// No jQuery approach
+		(function(){
+
+			function ajaxRequest (method, url, callback) {
+				var http = new XMLHttpRequest();
+
+				// Enables appending File objects to XHR requests
+				var fd = new FormData();
+
+				http.onreadystatechange = function() {
+					if (http.readyState === 4 && http.status === 200) {
+						callback(http.response);
+					}
+				};
+
+				// Append the input's file
+				fd.append('file', document.getElementById('file').files[0]);
+				http.open(method, url, true);
+				http.send(fd);
+			}
+
+			var form = document.querySelector('#upload-form');
+
+			form.addEventListener('submit', function(e) {
+
+				// Prevent from refreshing the page
+				e.stopPropagation();
+				e.preventDefault();
+
+				ajaxRequest('POST', window.location + 'file-size', function(data) {
+					alert('FILE SIZE: ' + data + ' BYTES.');
+				});
+				
+			}, false);
+		}());
+	</script>
+
+</body>
+</html>
