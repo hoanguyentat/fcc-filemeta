@@ -11,7 +11,6 @@ app.get('/', function(req, res) {
 	res.sendFile(process.cwd() + '/index.html');
 });
 
-// upload.single(THIS SHOULD BE THE SAME AS THE INPUT'S NAME)
 app.post('/file-size', upload.single('file'), function(req,res){
 
     res.json(req.file.size);
